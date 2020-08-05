@@ -9,8 +9,8 @@ all: $(GIT_HOOK) check
 
 include common.mk
 
-CFLAGS = -I./include
-CFLAGS += -std=c99 -pedantic -Wall -W -Werror
+CFLAGS = -I./include -I./private
+CFLAGS += -std=c99 -pedantic -Wall -W -Wno-unused-variable
 
 TESTS = \
     containerof \
@@ -37,15 +37,18 @@ TESTS = \
     list_splice_tail_init \
     list_cut_position
 
+EXAMPLES = \
+    merge-sort \
+
 TESTS := $(addprefix tests/,$(TESTS))
+EX := $(addprefix examples/,$(EXAMPLES))
 # dependency of source files
 deps := $(TESTS:%=%.o.d)
 
-TESTS_OK = $(TESTS:=.ok)
+TESTS_OK = $(TESTS:=.ok) $(EX:=.ok)
 
 check: $(TESTS_OK)
-
-$(TESTS_OK): %.ok: %
+$(TESTS_OK): %.ok: % 
 	$(Q)$(PRINTF) "*** Validating $< ***\n"
 	$(Q)./$< && $(PRINTF) "\t$(PASS_COLOR)[ Verified ]$(NO_COLOR)\n"
 	@touch $@

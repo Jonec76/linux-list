@@ -1,5 +1,9 @@
 *.o
 *.d
+examples/*.ok
+examples/insert-sort
+examples/merge-sort
+examples/quick-sort
 tests/*.ok
 tests/containerof
 tests/list_add
